@@ -9,7 +9,6 @@ var UserSchema = new mongoose.Schema({
         name: {type: String, default:""} ,
         picture: {type: String, default:""} 
     }, 
-    address: {type: String, default:""} , 
     history: [{
         date : {type: Date, default: Date.now  },
         paid: {type : Number, default: 0}
