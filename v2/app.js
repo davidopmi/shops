@@ -69,9 +69,11 @@ app.get('/', function(req,res){
 var apiRoutes = require("./api/index.js") ; 
 var usersRoutes = require("./routes/users.js"); 
 var categoriesRoutes = require("./routes/categories.js"); 
+var productsRoutes = require("./routes/products.js"); 
 app.use('/api', apiRoutes) ; 
 app.use(usersRoutes) ; 
 app.use(categoriesRoutes) ; 
+app.use(productsRoutes) ; 
 
 //start up server
 var port = process.env.PORT || 3000;
