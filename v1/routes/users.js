@@ -31,9 +31,23 @@ router.post('/signup',function(req,res,next){
     failureFlash: true 
 })); 
 
+//login 
+    //get: show the form  
+router.get('/login', function(req,res,next){
+    res.render('users/login.ejs') ; 
+})
+    //post: submit
+router.post('/login',passport.authenticate('local', {
+    successRedirect: "/", 
+    failureRedirect:"/login" , 
+    failureFlash: true 
+}), function(req,res,next){} ) ; 
 
-
-
-
+//logout
+router.get('/logout', function(req, res, next) {
+    req.logOut() ; 
+    //redirect to home page 
+    res.redirect('/') ; 
+}) ; 
 
 module.exports = router ; 
