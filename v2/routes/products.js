@@ -14,7 +14,16 @@ router.get('/products', function(req, res, next) {
     }) ; 
 }) ; 
 
-
+// /categories/:cid  GET   show all the products of this category
+router.get('/categories/:cid', function(req, res, next) {
+    var cid = req.params.cid  ; 
+    Product.find({category : cid}).populate("category").exec(function(err, foundProducts){
+        if (err) {
+            return next(err) ; 
+        } 
+        res.render('products/index', {products: foundProducts}) ; 
+    }); 
+}); 
 
 //add category
     //show the form 

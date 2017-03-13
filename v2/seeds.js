@@ -19,8 +19,7 @@ module.exports = function(){
             Product.remove({}, function(err){
                 if(err) {
                     if(err) return console.log(err.message) ;
-                    
-                } ; 
+                } 
                 callback(null) ; 
             }) ; 
         },function(callback){
