@@ -10,11 +10,15 @@ var express    = require('express') ,
     morgan     = require("morgan") , 
     //models 
     Category  = require("./models/category.js") , 
+    seedsDB    = require("./seeds.js") , 
     app        = express()
     ;
 
 //connect to database 
 mongoose.connect("mongodb://david:123@ds119380.mlab.com:19380/shops") ;
+
+//call the seedsDB
+seedsDB() ; 
 
 //settings
 app.use(morgan("dev")); 
