@@ -1,0 +1,39 @@
+<% include ../partials/header.ejs%>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="input-group col-md-12">
+                <input type="text" name="search_term" id="search_term" placeholder="search products.."></input>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="jumbotron">
+        <div class="container">
+              <h1>welcome to all products</h1>
+              <p>the followings are our products</p>
+              <p><a class="btn btn-primary btn-lg" href="/products/new" role="button">add new product</a></p>
+        </div>
+    </div>
+    
+    <div class="row" style="display:flex; flex-wrap:wrap;" id="searchResults">
+        <% products.forEach(function(product){  %>
+          <div class="col-sm-6 col-md-4">
+              <div class="thumbnail">
+                <img src="<%=product.image %>" alt="could not load image"></img>
+                <div class="caption">
+                    <h4>the product name is: <%= product.name %></h4>
+                    <h4>the product price is: <%= product.price %></h4>
+                    <h4>the product category is: <%= product.category.name %></h4>
+                </div>
+              </div>
+          </div>
+        <% }) %>
+    </div>
+</div>
+
+<% include ../partials/footer.ejs%>
