@@ -1,6 +1,7 @@
 var express = require("express") ; 
 var router = express.Router() ; 
 var Product = require("../models/product.js") ; 
+var Cart = require("../models/cart.js") ; 
 
 //index 
 router.get('/products', function(req, res, next) {
@@ -52,6 +53,48 @@ router.post('/products', function(req,res,next){
         res.redirect('/'); 
     })
 }) ; 
+
+//add product to cart 
+router.post('/product/:pid', function(req, res, next) {
+    var pid = req.params.pid ; 
+    //1: find out your cart 2: update your cart 3: save your cart 
+    Cart.findOne({owner: req.user._id}, function(err, foundCart){
+        if(err) return next(err) ; 
+        foundCart.items.push({
+            item: req.body.product_id , 
+            quantity: parseInt(req.body.quantity),
+            price : parseFloat(req.body.priceValue)
+        }); 
+        foundCart.total = (foundCart.total + parseFloat(req.body.priceValue)).toFixed(2) ; 
+        foundCart.save(function(err){
+            if(err) return next(err) ; 
+            res.redirect('/cart') ; 
+        })
+    }); 
+}) ; 
+
+router.get('/cart', function(req, res, next) {
+    //1: get your cart.... 
+    Cart.findOne({owner:req.user._id}).populate('items.item').exec(function(err, foundCart){
+        if(err) return next(err)  ;
+        res.render('carts/index.ejs', {cart: foundCart}) ; 
+    }); 
+}); 
+
+router.post('/remove', function(req, res, next) {
+    Cart.findOne({owner: req.user._id}, function(err, foundCart){
+        if(err) return next(err)  ;
+        //pull the item out of items array 
+        foundCart.items.pull(String(req.body.item)) ; 
+        //update the total 
+        foundCart.total = (parseFloat(foundCart.total) - parseFloat(req.body.itemPrice)).toFixed(2) ;  
+        //save and redirect to /cart 
+        foundCart.save(function(err){
+            if(err) return next(err)  ;
+            res.redirect('/cart') ; 
+        }); 
+    });
+}); 
 
 //edit a category
     //show the form

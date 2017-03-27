@@ -12,7 +12,7 @@
         <div class="col-md-4">
             <h3><%=product.name%></h3>
             <h3>$ <%=product.price%></h3>
-            <form>
+            <form action="/product/<%= product._id%>" method="post">
                 <div class="button-group" role="group">
                     <!--hidden 1: for 1 constant-->
                     <input type="hidden" name="quantity" id="quantity" value="1"></input>
