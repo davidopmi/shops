@@ -16,7 +16,8 @@
                                 <p class="list-group-item-text"># of pieces: <%=cart.items[i].quantity%></p>
                                 <p class="list-group-item-text">$ <%=cart.items[i].price%></p>
                                 <form action="/remove" method="post">
-                                    <input type="hidden" name="item" value="<%=cart.items[i].item._id%>" readonly></input>
+                                    <!--get the item id, pass to server to delete-->
+                                    <input type="hidden" name="item" value="<%=cart.items[i]._id%>" readonly></input>
                                     <input type="hidden" name="itemPrice" value="<%=cart.items[i].price%>" readonly></input>
                                     <button type="submit">Remove</button>
                                 </form>

@@ -1,0 +1,43 @@
+<% include ../partials/header.ejs%>
+<div class="container">
+    <div class=row>
+        <div class="col-md-4">
+            <div>
+                <img src="<%= product.image%>"></img>
+            </div>
+        </div>
+        
+        <div class="col-md-4"></div>
+        
+        <div class="col-md-4">
+            <h3><%=product.name%></h3>
+            <h3>$ <%=product.price%></h3>
+            <form action="/product/<%= product._id%>" method="post">
+                <div class="button-group" role="group">
+                    <!--hidden 1: for 1 constant-->
+                    <input type="hidden" name="quantity" id="quantity" value="1"></input>
+                    <button id="minus" class="btn btn-default">-</button>
+                    <button id="total" class="btn btn-default">1</button>
+                    <button id="plus" class="btn btn-default">+</button>
+                </div>
+                <div class="form-group">
+                    <!--hidden 2: for product._id-->
+                    <input type="hidden" id="product_id" name="product_id" value="<%= product._id%>"></input>
+                    <!--hidden 3: for unit price... serve as constant-->
+                    <input type="hidden" id="productHidden" name="productHidden" value="<%=product.price%>"></input>
+                    <input type="text" class="form-control" id="item" name="item" value="<%=product.name%>" readonly></input>
+                    <input type="text" class="form-control" id="priceValue" name="priceValue" value="<%=product.price%>" readonly ></input>
+                    <!--for login user, show "add to cart button"-->
+                    <% if(currentUser) { %>
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    <% } else{ %>
+                    <!--if not login, then login first-->
+                    <a href="/login" class="btn btn-warning">Login first</a>
+                    <% } %>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer.ejs%>
