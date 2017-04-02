@@ -2,7 +2,10 @@ var express = require("express") ;
 var router = express.Router() ; 
 var Product = require("../models/product.js") ; 
 var Cart = require("../models/cart.js") ; 
+var User = require("../models/user.js") ; 
 var stripe = require("stripe")('sk_test_hfu7rNHgh7SGrGKmCxh0sadm') ; 
+var async = require("async") ; 
+
 
 //index 
 router.get('/products', function(req, res, next) {
@@ -116,9 +119,50 @@ router.post('/checkout', function(req, res, next) {
       });
     }).then(function(charge) {
       // Use and save the charge info.
+        async.waterfall([
+            //1: find out the cart 
+            function(callback){
+                Cart.findOne({owner: req.user._id}, function(err, foundCart) {
+                    if(err) return next(err) ; 
+                    callback(err, foundCart) ; 
+                }); 
+            },
+            //2: find out the user and update user's history 
+            function(cart, callback){
+                User.findOne({_id: req.user._id}, function(err, foundUser){
+                    if(err) return next(err) ; 
+                    //populate all items in cart to user's shopping history
+                    for(var i = 0; i<cart.items.length ; i++){
+                        foundUser.history.push({
+                            item: cart.items[i].item , 
+                            paid : cart.items[i].price
+                        }) ; 
+                    }
+                    //====after you made changes to user, did you save it???
+                    foundUser.save(function(err){
+                        if(err) return next(err) ; 
+                        callback(err, foundUser) ; 
+                    }) ; 
+                }); 
+            },
+            //3: update the cart(remove all the items and total)
+            function(user, callback){
+                Cart.update({owner: req.user._id}, {$set:{
+                    items: [],
+                    total: 0 
+                }}, function(err, updated){
+                 if(updated){
+                     res.redirect('/') ; 
+                 } }) ;  
+                // Cart.findOne({owner: req.user._id}, function(err, foundCart) {
+                //     // the old way 
+                //     foundCart.items = [] ; 
+                //     foundCart.total = 0 ; 
+                //     foundCart.save() ; 
+                // }); 
+            }
+            ]) ;       
     });
-    
-    
 }); 
 
 

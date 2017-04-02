@@ -64,7 +64,8 @@
                     </div>                    
                 </div>
                 <div class="panel-body">
-                    <form role="form" id="payment-form" method="POST" action="#">
+                    <form role="form" id="payment-form" method="POST" action="/checkout">
+                        <input type="hidden" name="stripeMoney" value="<%= cart.total%>"></input>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group">

@@ -10,9 +10,10 @@ var UserSchema = new mongoose.Schema({
         picture: {type: String, default:""} 
     }, 
     history: [{
-        date : {type: Date, default: Date.now  },
-        paid: {type : Number, default: 0}
-        //item for later
+        paid: {type : Number, default: 0}, 
+        item: {type: mongoose.Schema.Types.ObjectId, 
+            ref: "Product"
+        }
     }]
 }) ; 
 // bcrypt to do 3 things!!! 
